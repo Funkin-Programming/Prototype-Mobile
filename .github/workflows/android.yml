@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 11
 
       - uses: krdlab/setup-haxe@master
         with:
@@ -54,10 +54,10 @@ jobs:
           haxelib run lime config JAVA_HOME $JAVA_HOME
 
       - name: Compile
-        run: haxelib run lime build android -release
+        run: haxelib run lime build android -debug
 
       - uses: actions/upload-artifact@v4
         with:
           name: Prototype-Android
-          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
+          path: export/release/android/bin/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
