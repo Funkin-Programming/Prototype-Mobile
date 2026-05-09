@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -25,22 +24,22 @@ jobs:
         with:
           haxe-version: 4.3.4
 
-      - name: Install Libraries
+      - name: Install Haxelib Dependencies
         run: |
-          haxelib install lime
-          haxelib install openfl
-          haxelib install flixel
-          haxelib install flixel-tools
-          haxelib install hxcpp
+          haxelib install lime --quiet
+          haxelib install openfl --quiet
+          haxelib install flixel --quiet
+          haxelib install flixel-tools --quiet
+          haxelib install hxcpp --quiet
 
       - name: Setup Lime
         run: |
           haxelib run lime setup
           haxelib run lime setup android
 
-      - name: Build APK
+      - name: Build Android
         run: |
-          lime build android
+          haxelib run lime build android
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
