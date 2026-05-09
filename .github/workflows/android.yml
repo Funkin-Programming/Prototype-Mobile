@@ -45,11 +45,15 @@ jobs:
             -keyalg RSA -keysize 2048 -validity 10000 \
             -dname "CN=Prototype, O=Dev, C=BR"
 
+      - name: Setup NDK
+        run: |
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;21.4.7075529"
+
       - name: Configure Android
         run: |
           haxelib run lime setup android -alias -accept
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_HOME/ndk/21.4.7075529
           haxelib run lime config JAVA_HOME $JAVA_HOME
 
       - name: Compile
