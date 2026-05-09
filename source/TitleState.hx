@@ -16,6 +16,7 @@ import flixel.util.FlxTimer;
 class TitleState extends FlxTransitionableState
 {
 	static var initialized:Bool = false;
+	var transitioning:Bool      = false;
 
 	override public function create():Void
 	{
@@ -44,7 +45,7 @@ class TitleState extends FlxTransitionableState
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.stageback__png);
-		bg.antialiasing = true;
+		bg.antialiasing  = true;
 		bg.setGraphicSize(Std.int(bg.width * 0.6));
 		bg.updateHitbox();
 		add(bg);
@@ -65,8 +66,6 @@ class TitleState extends FlxTransitionableState
 		FlxG.sound.playMusic('assets/music/title.mp3', 0, false);
 		FlxG.sound.music.fadeIn(4, 0, 0.7);
 	}
-
-	var transitioning:Bool = false;
 
 	function _proceed():Void
 	{
@@ -89,10 +88,6 @@ class TitleState extends FlxTransitionableState
 		#if mobile
 		for (touch in FlxG.touches.list)
 			if (touch.justPressed) _proceed();
-
-		#if android
-		if (FlxG.android.justReleased.BACK) {}
-		#end
 		#end
 
 		super.update(elapsed);
