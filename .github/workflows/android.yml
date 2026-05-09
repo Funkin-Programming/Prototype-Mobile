@@ -11,8 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
 
       - uses: actions/setup-java@v4
         with:
@@ -65,24 +63,8 @@ jobs:
       - name: Compile
         run: haxelib run lime build android -release
 
-      - name: Re-sign APK
-        run: |
-          BT=$(ls $ANDROID_HOME/build-tools/ | sort -V | tail -1)
-          APK=$(find export/ -name "*.apk" | head -1)
-          $ANDROID_HOME/build-tools/$BT/zipalign -v -p 4 $APK aligned.apk
-          $ANDROID_HOME/build-tools/$BT/apksigner sign \
-            --ks key.keystore \
-            --ks-key-alias prototype \
-            --ks-pass pass:prototype \
-            --key-pass pass:prototype \
-            --v1-signing-enabled true \
-            --v2-signing-enabled true \
-            --v3-signing-enabled true \
-            --out signed.apk \
-            aligned.apk
-
       - uses: actions/upload-artifact@v4
         with:
           name: Prototype-Android
-          path: signed.apk
+          path: export/release/android/bin/app/build/outputs/apk/release/Prototype-release.apk
           if-no-files-found: error
