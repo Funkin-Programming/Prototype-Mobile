@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
 
-	<app title="FNF: Prototype" file="ld47" main="Main" version="0.0.1" company="HaxeFlixel" if="desktop" />
+	<app title="FNF: Prototype" file="Prototype" main="Main" version="0.0.1" company="HaxeFlixel" if="desktop" />
 	<app title="FNF: Prototype" file="ld47" packageName="com.haxeflixel.prototype" package="com.haxeflixel.prototype" main="Main" version="0.0.1" company="HaxeFlixel" if="mobile" />
 
 	<app preloader="flixel.system.FlxPreloader" />
