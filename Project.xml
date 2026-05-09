@@ -25,7 +25,6 @@
 
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
-	<haxelib name="extension-androidtools" if="android" />
 
 	<haxedef name="FLX_NO_MOUSE_ADVANCED" />
 	<haxedef name="FLX_NO_MOUSE"    if="mobile" />
