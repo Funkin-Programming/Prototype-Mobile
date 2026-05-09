@@ -2,13 +2,15 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxGame;
-import mobile.Fullscreen;
-
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.display.StageAlign;
 import openfl.display.StageScaleMode;
 import openfl.events.Event;
+
+#if android
+import flixel.input.android.FlxAndroidKey;
+#end
 
 class Main extends Sprite
 {
@@ -27,14 +29,11 @@ class Main extends Sprite
 		if (hasEventListener(Event.ADDED_TO_STAGE))
 			removeEventListener(Event.ADDED_TO_STAGE, _init);
 
-		stage.align     = StageAlign.TOP_LEFT;
+		stage.align = StageAlign.TOP_LEFT;
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 
 		#if mobile
-		var w = stage.stageWidth;
-		var h = stage.stageHeight;
-		addChild(new FlxGame(w, h, TitleState));
-		Fullscreen.apply();
+		addChild(new FlxGame(0, 0, TitleState));
 		#else
 		addChild(new FlxGame(1280, 720, TitleState));
 		addChild(new FPS(10, 3, 0xFFFFFF));
