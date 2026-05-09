@@ -2,7 +2,7 @@
 <project>
 
 	<app title="FNF: Prototype" file="Prototype" main="Main" version="0.0.1" company="HaxeFlixel" if="desktop" />
-	<app title="FNF: Prototype" file="ld47" packageName="com.haxeflixel.prototype" package="com.haxeflixel.prototype" main="Main" version="0.0.1" company="HaxeFlixel" if="mobile" />
+	<app title="FNF: Prototype" file="Prototype" packageName="com.funkin.prototype" package="com.funkin.prototype" main="Main" version="0.0.1" company="HaxeFlixel" if="mobile" />
 
 	<app preloader="flixel.system.FlxPreloader" />
 	<set name="SWF_VERSION" value="11.8" />
@@ -13,7 +13,7 @@
 	<window if="mobile"  orientation="landscape" fullscreen="true" width="0" height="0"
 	        allow-shaders="true" require-shaders="true" allow-high-dpi="true" resizable="false" />
 
-	<android min-sdk-version="21" target-sdk-version="34" if="android" />
+	<android min-sdk-version="21" target-sdk-version="33" if="android" />
 	<certificate path="key.keystore" password="prototype" alias="prototype" alias-password="prototype" if="android" unless="debug" />
 
 	<set name="BUILD_DIR" value="export/debug"   if="debug" />
@@ -21,7 +21,8 @@
 
 	<classpath name="source" />
 
-	<assets path="assets" embed="true" />
+	<assets path="assets" embed="true" if="mobile" />
+	<assets path="assets" if="desktop" />
 
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
@@ -37,11 +38,21 @@
 	<section if="android">
 		<permission android:name="android.permission.INTERNET" />
 		<permission android:name="android.permission.VIBRATE" />
-		<permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-		<permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+		<permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+		            android:maxSdkVersion="32" />
+		<permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+		            android:maxSdkVersion="28" />
 		<permission android:name="android.permission.READ_MEDIA_AUDIO" />
 		<permission android:name="android.permission.READ_MEDIA_IMAGES" />
 		<permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+		<queries>
+			<intent>
+				<action android:name="android.intent.action.VIEW" />
+				<data android:scheme="https" />
+			</intent>
+			<package android:name="com.android.vending" />
+		</queries>
 	</section>
 
 </project>
