@@ -18,9 +18,6 @@ class Main extends Sprite
 
 		FullScreen.apply();
 
-		FlxG.autoPause = false;
-		FlxG.fixedTimestep = false;
-
 		#if !mobile
 		addChild(new FPS(10, 3, 0xFFFFFF));
 		#end
