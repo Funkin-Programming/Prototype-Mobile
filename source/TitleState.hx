@@ -36,10 +36,10 @@ class TitleState extends FlxTransitionableState
 
 			initialized = true;
 
-			FlxTransitionableState.defaultTransIn.tileData = {asset: diamond, width: 32, height: 32};
+			FlxTransitionableState.defaultTransIn.tileData  = {asset: diamond, width: 32, height: 32};
 			FlxTransitionableState.defaultTransOut.tileData = {asset: diamond, width: 32, height: 32};
 
-			transIn = FlxTransitionableState.defaultTransIn;
+			transIn  = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
 		}
 
@@ -62,30 +62,36 @@ class TitleState extends FlxTransitionableState
 		add(logo);
 
 		FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
-		FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
+		FlxTween.tween(logo,   {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
 
 		FlxG.sound.playMusic('assets/music/title.mp3', 0, false);
-
 		FlxG.sound.music.fadeIn(4, 0, 0.7);
 	}
 
 	var transitioning:Bool = false;
 
+	function _proceed():Void
+	{
+		if (transitioning) return;
+		transitioning = true;
+
+		FlxG.camera.flash(FlxColor.WHITE, 1);
+		FlxG.sound.music.stop();
+		FlxG.sound.play('assets/music/titleShoot.mp3', 0.7);
+
+		new FlxTimer().start(2, function(_) { FlxG.switchState(new PlayState()); });
+	}
+
 	override function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.ENTER && !transitioning)
-		{
-			FlxG.camera.flash(FlxColor.WHITE, 1);
+		if (FlxG.keys.justPressed.ENTER)
+			_proceed();
 
-			transitioning = true;
-			FlxG.sound.music.stop();
-
-			new FlxTimer().start(2, function(tmr:FlxTimer)
-			{
-				FlxG.switchState(new PlayState());
-			});
-			FlxG.sound.play('assets/music/titleShoot.mp3', 0.7);
-		}
+		#if mobile
+		for (touch in FlxG.touches.list)
+			if (touch.justPressed)
+				_proceed();
+		#end
 
 		super.update(elapsed);
 	}
