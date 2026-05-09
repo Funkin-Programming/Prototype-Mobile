@@ -82,22 +82,31 @@ jobs:
       - name: Compile
         run: haxelib run lime build android -release
 
-      - name: Re-sign APK with V2
+      - name: Find APK
+        run: find export/ -name "*.apk" -type f
+
+      - name: Setup build-tools
         run: |
-          APK="export/release/android/bin/app/build/outputs/apk/release/Prototype-release.apk"
-          $ANDROID_HOME/build-tools/33.0.0/zipalign -v -p 4 $APK Prototype-aligned.apk
-          $ANDROID_HOME/build-tools/33.0.0/apksigner sign \
+          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
+
+      - name: Re-sign APK
+        run: |
+          APK=$(find export/ -name "*.apk" | head -1)
+          $ANDROID_HOME/build-tools/34.0.0/zipalign -v -p 4 $APK aligned.apk
+          $ANDROID_HOME/build-tools/34.0.0/apksigner sign \
             --ks key.keystore \
             --ks-key-alias prototype \
             --ks-pass pass:prototype \
             --key-pass pass:prototype \
             --v1-signing-enabled true \
             --v2-signing-enabled true \
-            --out Prototype-signed.apk \
-            Prototype-aligned.apk
+            --v3-signing-enabled true \
+            --out signed.apk \
+            aligned.apk
+          $ANDROID_HOME/build-tools/34.0.0/apksigner verify --verbose signed.apk
 
       - uses: actions/upload-artifact@v4
         with:
           name: Prototype-Android
-          path: Prototype-signed.apk
+          path: signed.apk
           if-no-files-found: error
