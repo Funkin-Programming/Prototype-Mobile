@@ -29,6 +29,7 @@ jobs:
           haxelib install lime --quiet
           haxelib install openfl --quiet
           haxelib install flixel --quiet
+          haxelib install flixel-addons --quiet
           haxelib install flixel-tools --quiet
           haxelib install hxcpp --quiet
 
@@ -44,5 +45,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: android-build
+          name: Prototype (Android)
           path: export/release/android/bin/app/build/outputs/apk/debug/*.apk
