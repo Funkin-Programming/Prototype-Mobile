@@ -8,10 +8,6 @@ import openfl.display.StageAlign;
 import openfl.display.StageScaleMode;
 import openfl.events.Event;
 
-#if android
-import flixel.input.android.FlxAndroidKey;
-#end
-
 class Main extends Sprite
 {
 	public function new()
@@ -29,7 +25,7 @@ class Main extends Sprite
 		if (hasEventListener(Event.ADDED_TO_STAGE))
 			removeEventListener(Event.ADDED_TO_STAGE, _init);
 
-		stage.align = StageAlign.TOP_LEFT;
+		stage.align     = StageAlign.TOP_LEFT;
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 
 		#if mobile
