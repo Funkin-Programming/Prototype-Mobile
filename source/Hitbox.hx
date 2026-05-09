@@ -4,7 +4,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
 import flixel.group.FlxGroup;
 
 class Hitbox extends FlxGroup
@@ -18,17 +17,15 @@ class Hitbox extends FlxGroup
 	{
 		super();
 
-		buttonLeft  = createHint(0,                                    0, Std.int(FlxG.width / 4), FlxG.height, 0xFFC24B99);
-		buttonDown  = createHint(FlxG.width / 4,                       0, Std.int(FlxG.width / 4), FlxG.height, 0xFF00FFFF);
-		buttonUp    = createHint(FlxG.width / 2,                       0, Std.int(FlxG.width / 4), FlxG.height, 0xFF12FA05);
-		buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4),  0, Std.int(FlxG.width / 4), FlxG.height, 0xFFF9393F);
+		buttonLeft  = createHint(0,                                   0, Std.int(FlxG.width / 4), FlxG.height, 0xFFC24B99);
+		buttonDown  = createHint(FlxG.width / 4,                      0, Std.int(FlxG.width / 4), FlxG.height, 0xFF00FFFF);
+		buttonUp    = createHint(FlxG.width / 2,                      0, Std.int(FlxG.width / 4), FlxG.height, 0xFF12FA05);
+		buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), 0, Std.int(FlxG.width / 4), FlxG.height, 0xFFF9393F);
 
 		add(buttonLeft);
 		add(buttonDown);
 		add(buttonUp);
 		add(buttonRight);
-
-		scrollFactor.set();
 	}
 
 	function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int):FlxSprite
@@ -40,8 +37,10 @@ class Hitbox extends FlxGroup
 		return hint;
 	}
 
-	public function update(elapsed:Float):Void
+	override public function update(elapsed:Float):Void
 	{
+		super.update(elapsed);
+
 		for (touch in FlxG.touches.list)
 		{
 			if (touch.justPressed)
