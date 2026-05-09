@@ -83,26 +83,16 @@ class TitleState extends FlxTransitionableState
 	}
 
 	override function update(elapsed:Float)
-{
-	var entered:Bool = false;
-
-	#if !mobile
-	if (FlxG.keys.justPressed.ENTER) entered = true;
-	#end
-
-	#if mobile
-	for (touch in FlxG.touches.list)
-		if (touch.justPressed) entered = true;
-	#end
-
-	if (entered && !transitioning)
 	{
-		FlxG.camera.flash(FlxColor.WHITE, 1);
-		transitioning = true;
-		FlxG.sound.music.stop();
-		new FlxTimer().start(2, function(_) { FlxG.switchState(new PlayState()); });
-		FlxG.sound.play('assets/music/titleShoot.mp3', 0.7);
-	}
+		#if !mobile
+		if (FlxG.keys.justPressed.ENTER) _proceed();
+		#end
 
-	super.update(elapsed);
+		#if mobile
+		for (touch in FlxG.touches.list)
+			if (touch.justPressed) _proceed();
+		#end
+
+		super.update(elapsed);
+	}
 }
