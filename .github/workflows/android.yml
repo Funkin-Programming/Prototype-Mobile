@@ -24,8 +24,7 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib git hxcpp https://github.com/AlafandyPorting/hxcpp.git --quiet
-          cd ~/haxelib/hxcpp/git/tools/hxcpp && haxe compile.hxml
+          haxelib git hxcpp https://github.com/AlafandyPorting/hxcpp-2.git --quiet
           haxelib install lime          7.9.0  --quiet
           haxelib install openfl        9.1.0  --quiet
           haxelib install flixel        4.11.0 --quiet
