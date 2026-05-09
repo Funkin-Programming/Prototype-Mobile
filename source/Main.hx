@@ -9,8 +9,6 @@ import openfl.display.Sprite;
 import openfl.display.StageAlign;
 import openfl.display.StageScaleMode;
 import openfl.events.Event;
-import openfl.events.KeyboardEvent;
-import openfl.ui.Keyboard;
 
 class Main extends Sprite
 {
@@ -44,11 +42,6 @@ class Main extends Sprite
 
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
-		stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent)
-		{
-			if (e.keyCode == Keyboard.BACK)
-				e.preventDefault();
-		});
 		#end
 	}
 }
