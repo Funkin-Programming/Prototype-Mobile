@@ -62,10 +62,10 @@ jobs:
           haxelib run lime config JAVA_HOME $JAVA_HOME
 
       - name: Compile
-        run: haxelib run lime build android -debug
+        run: haxelib run lime build android -release
 
       - uses: actions/upload-artifact@v4
         with:
           name: Prototype-Android
-          path: export/release/android/bin/app/build/outputs/apk/debug/*.apk
+          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
