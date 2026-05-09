@@ -43,17 +43,6 @@ jobs:
           haxelib set flixel        4.11.0
           haxelib set flixel-addons 2.11.0
 
-      - name: Generate Keystore
-        run: |
-          keytool -genkeypair -v \
-            -keystore key.keystore \
-            -storetype JKS \
-            -alias prototype \
-            -storepass prototype \
-            -keypass prototype \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -dname "CN=Prototype, O=Dev, C=BR"
-
       - name: Configure Android
         run: |
           haxelib run lime setup android -alias -accept
@@ -62,10 +51,10 @@ jobs:
           haxelib run lime config JAVA_HOME $JAVA_HOME
 
       - name: Compile
-        run: haxelib run lime build android -release
+        run: haxelib run lime build android -debug
 
       - uses: actions/upload-artifact@v4
         with:
           name: Prototype-Android
-          path: export/release/android/bin/app/build/outputs/apk/release/*.apk
+          path: export/debug/android/bin/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
