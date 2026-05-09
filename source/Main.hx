@@ -9,6 +9,7 @@ import openfl.display.Sprite;
 import openfl.display.StageAlign;
 import openfl.display.StageScaleMode;
 import openfl.display.StageDisplayState;
+import openfl.events.Event;
 
 class Main extends Sprite
 {
@@ -16,7 +17,18 @@ class Main extends Sprite
 	{
 		super();
 
-		stage.align = StageAlign.TOP_LEFT;
+		if (stage != null)
+			_init();
+		else
+			addEventListener(Event.ADDED_TO_STAGE, _init);
+	}
+
+	function _init(?e:Event):Void
+	{
+		if (hasEventListener(Event.ADDED_TO_STAGE))
+			removeEventListener(Event.ADDED_TO_STAGE, _init);
+
+		stage.align     = StageAlign.TOP_LEFT;
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 
 		addChild(new FlxGame(0, 0, TitleState));
