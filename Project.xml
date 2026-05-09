@@ -13,7 +13,7 @@
 	<window if="mobile"  orientation="landscape" fullscreen="true" width="0" height="0"
 	        allow-shaders="true" require-shaders="true" allow-high-dpi="true" resizable="false" />
 
-	<android min-sdk-version="21" target-sdk-version="33" if="android" />
+	<android min-sdk-version="21" target-sdk-version="35" if="android" />
 	<architecture name="armv7" if="android" />
 	<architecture name="arm64" if="android" />
 	<certificate path="key.keystore" password="prototype" alias="prototype" alias-password="prototype" if="android" unless="debug" />
@@ -56,5 +56,7 @@
 			<package android:name="com.android.vending" />
 		</queries>
 	</section>
+
+	<icon path="art/icon.png" />
 
 </project>
