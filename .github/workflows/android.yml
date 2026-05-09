@@ -20,6 +20,8 @@ jobs:
           java-version: 17
 
       - name: Setup NDK and SDK
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
         run: |
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;21.4.7075529"
           echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-33"
