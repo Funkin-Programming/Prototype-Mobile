@@ -14,6 +14,8 @@
 	        allow-shaders="true" require-shaders="true" allow-high-dpi="true" resizable="false" />
 
 	<android min-sdk-version="21" target-sdk-version="33" if="android" />
+	<architecture name="armv7" if="android" />
+	<architecture name="arm64" if="android" />
 	<certificate path="key.keystore" password="prototype" alias="prototype" alias-password="prototype" if="android" unless="debug" />
 
 	<set name="BUILD_DIR" value="export/debug"   if="debug" />
