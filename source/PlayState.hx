@@ -54,17 +54,17 @@ class PlayState extends FlxTransitionableState
 	private var playerStrums:FlxTypedGroup<FlxSprite>;
 
 	private var camZooming:Bool = false;
-	private var curSong:String = "";
+	private var curSong:String  = "";
 
-	private var gfSpeed:Int = 1;
-	private var health:Float = 1;
-	private var combo:Int = 0;
+	private var gfSpeed:Int    = 1;
+	private var health:Float   = 1;
+	private var combo:Int      = 0;
 
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
 
-	private var generatedMusic:Bool = false;
-	private var countingDown:Bool = false;
+	private var generatedMusic:Bool  = false;
+	private var countingDown:Bool    = false;
 
 	private var healthHeads:FlxSprite;
 
@@ -164,7 +164,6 @@ class PlayState extends FlxTransitionableState
 					FlxG.sound.play('assets/sounds/introGo.mp3', 0.6);
 				case 4:
 			}
-
 			swagCounter += 1;
 		}, 5);
 
@@ -241,17 +240,17 @@ class PlayState extends FlxTransitionableState
 
 		while (playerCounter < 2)
 		{
-			var daBeats:Int    = 0;
+			var daBeats:Int     = 0;
 			var totalLength:Int = 0;
 
 			for (section in noteData)
 			{
 				var dumbassSection:Array<Dynamic> = section;
-				var daStep:Int    = 0;
+				var daStep:Int     = 0;
 				var coolSection:Int = Std.int(section.length / 4);
 
-				if (coolSection <= 4)       coolSection = 4;
-				else if (coolSection <= 8)  coolSection = 8;
+				if (coolSection <= 4)      coolSection = 4;
+				else if (coolSection <= 8) coolSection = 8;
 
 				for (songNotes in dumbassSection)
 				{
@@ -263,7 +262,7 @@ class PlayState extends FlxTransitionableState
 						var daStrumTime:Float = ((daStep * Conductor.stepCrochet) + (Conductor.crochet * 8 * totalLength))
 							+ ((Conductor.crochet * coolSection) * playerCounter);
 
-						var oldNote:Note = unspawnNotes.length > 0 ? unspawnNotes[unspawnNotes.length - 1] : null;
+						var oldNote:Note  = unspawnNotes.length > 0 ? unspawnNotes[unspawnNotes.length - 1] : null;
 						var swagNote:Note = new Note(daStrumTime, songNotes, oldNote);
 						swagNote.scrollFactor.set(0, 0);
 						unspawnNotes.push(swagNote);
@@ -281,7 +280,7 @@ class PlayState extends FlxTransitionableState
 				if (playerCounter == 0)
 					sectionLengths.push(Math.round(coolSection / 4));
 				totalLength += Math.round(coolSection / 4);
-				daBeats += 1;
+				daBeats     += 1;
 			}
 
 			playerCounter += 1;
@@ -475,8 +474,8 @@ class PlayState extends FlxTransitionableState
 				{
 					if (daNote.tooLate)
 					{
-						health         -= 0.05;
-						vocals.volume   = 0;
+						health        -= 0.05;
+						vocals.volume  = 0;
 					}
 
 					daNote.active  = false;
@@ -490,10 +489,6 @@ class PlayState extends FlxTransitionableState
 					notes.sort(FlxSort.byY, FlxSort.DESCENDING);
 			});
 		}
-
-		#if mobile
-		hitbox.update(elapsed);
-		#end
 
 		keyShit();
 	}
@@ -510,30 +505,30 @@ class PlayState extends FlxTransitionableState
 		var rating:FlxSprite = new FlxSprite();
 		var daRating:String  = "shit";
 
-		if (combo > 60)       daRating = 'sick';
-		else if (combo > 12)  daRating = 'good';
-		else if (combo > 4)   daRating = 'bad';
+		if (combo > 60)      daRating = 'sick';
+		else if (combo > 12) daRating = 'good';
+		else if (combo > 4)  daRating = 'bad';
 
 		rating.loadGraphic('assets/images/' + daRating + ".png");
 		rating.screenCenter();
-		rating.x             = coolText.x - 40;
-		rating.y            -= 60;
+		rating.x              = coolText.x - 40;
+		rating.y             -= 60;
 		rating.acceleration.y = 550;
-		rating.velocity.y   -= FlxG.random.int(140, 175);
+		rating.velocity.y    -= FlxG.random.int(140, 175);
 		rating.setGraphicSize(Std.int(rating.width * 0.7));
 		rating.updateHitbox();
-		rating.antialiasing  = true;
-		rating.velocity.x   -= FlxG.random.int(0, 10);
+		rating.antialiasing   = true;
+		rating.velocity.x    -= FlxG.random.int(0, 10);
 
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.combo__png);
 		comboSpr.screenCenter();
-		comboSpr.x             = coolText.x;
+		comboSpr.x              = coolText.x;
 		comboSpr.acceleration.y = 600;
-		comboSpr.antialiasing  = true;
-		comboSpr.velocity.y   -= 150;
+		comboSpr.antialiasing   = true;
+		comboSpr.velocity.y    -= 150;
 		comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
 		comboSpr.updateHitbox();
-		comboSpr.velocity.x   += FlxG.random.int(1, 10);
+		comboSpr.velocity.x    += FlxG.random.int(1, 10);
 		add(comboSpr);
 		add(rating);
 
@@ -547,9 +542,9 @@ class PlayState extends FlxTransitionableState
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic('assets/images/num' + Std.int(i) + '.png');
 			numScore.screenCenter();
-			numScore.x            = coolText.x + (43 * daLoop) - 90;
-			numScore.y           += 80;
-			numScore.antialiasing = true;
+			numScore.x             = coolText.x + (43 * daLoop) - 90;
+			numScore.y            += 80;
+			numScore.antialiasing  = true;
 			numScore.setGraphicSize(Std.int(numScore.width * 0.5));
 			numScore.updateHitbox();
 			numScore.acceleration.y = FlxG.random.int(200, 300);
@@ -576,28 +571,45 @@ class PlayState extends FlxTransitionableState
 
 	private function keyShit():Void
 	{
-		var up    = FlxG.keys.anyPressed([W, UP]);
-		var right = FlxG.keys.anyPressed([D, RIGHT]);
-		var down  = FlxG.keys.anyPressed([S, DOWN]);
-		var left  = FlxG.keys.anyPressed([A, LEFT]);
+		var up:Bool    = false;
+		var right:Bool = false;
+		var down:Bool  = false;
+		var left:Bool  = false;
 
-		var upP    = FlxG.keys.anyJustPressed([W, UP]);
-		var rightP = FlxG.keys.anyJustPressed([D, RIGHT]);
-		var downP  = FlxG.keys.anyJustPressed([S, DOWN]);
-		var leftP  = FlxG.keys.anyJustPressed([A, LEFT]);
+		var upP:Bool    = false;
+		var rightP:Bool = false;
+		var downP:Bool  = false;
+		var leftP:Bool  = false;
 
-		var upR    = FlxG.keys.anyJustReleased([W, UP]);
-		var rightR = FlxG.keys.anyJustReleased([D, RIGHT]);
-		var downR  = FlxG.keys.anyJustReleased([S, DOWN]);
-		var leftR  = FlxG.keys.anyJustReleased([A, LEFT]);
+		var upR:Bool    = false;
+		var rightR:Bool = false;
+		var downR:Bool  = false;
+		var leftR:Bool  = false;
+
+		#if !mobile
+		up    = FlxG.keys.anyPressed([W, UP]);
+		right = FlxG.keys.anyPressed([D, RIGHT]);
+		down  = FlxG.keys.anyPressed([S, DOWN]);
+		left  = FlxG.keys.anyPressed([A, LEFT]);
+
+		upP    = FlxG.keys.anyJustPressed([W, UP]);
+		rightP = FlxG.keys.anyJustPressed([D, RIGHT]);
+		downP  = FlxG.keys.anyJustPressed([S, DOWN]);
+		leftP  = FlxG.keys.anyJustPressed([A, LEFT]);
+
+		upR    = FlxG.keys.anyJustReleased([W, UP]);
+		rightR = FlxG.keys.anyJustReleased([D, RIGHT]);
+		downR  = FlxG.keys.anyJustReleased([S, DOWN]);
+		leftR  = FlxG.keys.anyJustReleased([A, LEFT]);
+		#end
 
 		#if mobile
 		if (hitbox != null)
 		{
-			if (hitbox.isPressed(hitbox.buttonUp))    up    = true;
-			if (hitbox.isPressed(hitbox.buttonRight)) right = true;
-			if (hitbox.isPressed(hitbox.buttonDown))  down  = true;
-			if (hitbox.isPressed(hitbox.buttonLeft))  left  = true;
+			up    = hitbox.isPressed(hitbox.buttonUp);
+			right = hitbox.isPressed(hitbox.buttonRight);
+			down  = hitbox.isPressed(hitbox.buttonDown);
+			left  = hitbox.isPressed(hitbox.buttonLeft);
 
 			for (touch in FlxG.touches.list)
 			{
@@ -724,13 +736,6 @@ class PlayState extends FlxTransitionableState
 
 	function badNoteCheck(?upP:Bool = false, ?rightP:Bool = false, ?downP:Bool = false, ?leftP:Bool = false):Void
 	{
-		#if !mobile
-		upP    = FlxG.keys.anyJustPressed([W, UP]);
-		rightP = FlxG.keys.anyJustPressed([D, RIGHT]);
-		downP  = FlxG.keys.anyJustPressed([S, DOWN]);
-		leftP  = FlxG.keys.anyJustPressed([A, LEFT]);
-		#end
-
 		if (leftP)  noteMiss(4);
 		if (upP)    noteMiss(1);
 		if (rightP) noteMiss(2);
@@ -747,8 +752,7 @@ class PlayState extends FlxTransitionableState
 	{
 		if (!note.wasGoodHit)
 		{
-			combo += 1;
-
+			combo  += 1;
 			health += note.noteData > 0 ? 0.03 : 0.007;
 
 			switch (Math.abs(note.noteData))
