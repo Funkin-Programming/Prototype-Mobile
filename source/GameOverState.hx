@@ -21,7 +21,7 @@ class GameOverState extends FlxTransitionableState
 		var restart:FlxSprite = new FlxSprite(500, 50).loadGraphic(AssetPaths.restart__png);
 		restart.setGraphicSize(Std.int(restart.width * 0.6));
 		restart.updateHitbox();
-		restart.alpha = 0;
+		restart.alpha        = 0;
 		restart.antialiasing = true;
 		add(restart);
 
@@ -35,17 +35,28 @@ class GameOverState extends FlxTransitionableState
 
 	private var fading:Bool = false;
 
+	function _restart():Void
+	{
+		if (fading) return;
+		fading = true;
+		FlxG.sound.music.fadeOut(0.5, 0, function(_)
+		{
+			FlxG.sound.music.stop();
+			FlxG.switchState(new PlayState());
+		});
+	}
+
 	override function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.ANY && !fading)
-		{
-			fading = true;
-			FlxG.sound.music.fadeOut(0.5, 0, function(twn:FlxTween)
-			{
-				FlxG.sound.music.stop();
-				FlxG.switchState(new PlayState());
-			});
-		}
+		#if !mobile
+		if (FlxG.keys.justPressed.ANY) _restart();
+		#end
+
+		#if mobile
+		for (touch in FlxG.touches.list)
+			if (touch.justPressed) _restart();
+		#end
+
 		super.update(elapsed);
 	}
 }
