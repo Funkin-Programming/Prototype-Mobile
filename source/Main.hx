@@ -9,6 +9,8 @@ import openfl.display.Sprite;
 import openfl.display.StageAlign;
 import openfl.display.StageScaleMode;
 import openfl.events.Event;
+import openfl.events.KeyboardEvent;
+import openfl.ui.Keyboard;
 
 class Main extends Sprite
 {
@@ -30,18 +32,23 @@ class Main extends Sprite
 		stage.align     = StageAlign.TOP_LEFT;
 		stage.scaleMode = StageScaleMode.NO_SCALE;
 
-		addChild(new FlxGame(0, 0, TitleState));
-
 		#if mobile
+		var w = stage.stageWidth;
+		var h = stage.stageHeight;
+		addChild(new FlxGame(w, h, TitleState));
 		Fullscreen.apply();
-		#end
-
-		#if !mobile
+		#else
+		addChild(new FlxGame(1280, 720, TitleState));
 		addChild(new FPS(10, 3, 0xFFFFFF));
 		#end
 
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
+		stage.addEventListener(KeyboardEvent.KEY_DOWN, function(e:KeyboardEvent)
+		{
+			if (e.keyCode == Keyboard.BACK)
+				e.preventDefault();
+		});
 		#end
 	}
 }
