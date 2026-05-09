@@ -2,8 +2,6 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
-import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
@@ -26,21 +24,21 @@ class TitleState extends FlxTransitionableState
 		if (!initialized)
 		{
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
-			diamond.persist = true;
+			diamond.persist        = true;
 			diamond.destroyOnNoUse = false;
 
-			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 2, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
-				new FlxRect(0, 0, FlxG.width, FlxG.height));
+			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 2, new FlxPoint(0, -1),
+				{asset: diamond, width: 32, height: 32}, new FlxRect(0, 0, FlxG.width, FlxG.height));
 			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 1.3, new FlxPoint(0, 1),
 				{asset: diamond, width: 32, height: 32}, new FlxRect(0, 0, FlxG.width, FlxG.height));
-
-			initialized = true;
 
 			FlxTransitionableState.defaultTransIn.tileData  = {asset: diamond, width: 32, height: 32};
 			FlxTransitionableState.defaultTransOut.tileData = {asset: diamond, width: 32, height: 32};
 
 			transIn  = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
+
+			initialized = true;
 		}
 
 		persistentUpdate = true;
@@ -91,6 +89,10 @@ class TitleState extends FlxTransitionableState
 		#if mobile
 		for (touch in FlxG.touches.list)
 			if (touch.justPressed) _proceed();
+
+		#if android
+		if (FlxG.android.justReleased.BACK) {}
+		#end
 		#end
 
 		super.update(elapsed);
