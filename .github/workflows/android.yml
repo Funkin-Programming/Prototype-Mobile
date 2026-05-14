@@ -62,8 +62,9 @@ jobs:
           haxelib run lime config JAVA_HOME $JAVA_HOME
 
       - name: Gradle Memory Fix
-        run: |
-          echo "org.gradle.jvmargs=-Xmx4096M" >> ~/.gradle/gradle.properties
+  run: |
+    mkdir -p ~/.gradle
+    echo "org.gradle.jvmargs=-Xmx4096M" >> ~/.gradle/gradle.properties
 
       - name: Clean
         run: |
