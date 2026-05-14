@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
@@ -31,29 +31,53 @@ jobs:
       - name: Install Libraries
         run: |
           haxelib setup ~/haxelib
-          haxelib git hxcpp https://github.com/AlafandyPorting/hxcpp-2.git --quiet
-          haxelib install lime          --quiet
-          haxelib install openfl        --quiet
-          haxelib install flixel        --quiet
-          haxelib install flixel-addons --quiet
 
-      - name: Accept Licenses and Setup NDK
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "ndk;21.4.7075529"
+          haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git
+          
+          haxelib install lime
+          haxelib install openfl
+          haxelib install flixel
+          haxelib install flixel-addons
+          haxelib install flixel-ui
+          haxelib install hscript
+          haxelib install tjson
+          haxelib install actuate
 
-      - name: Configure Android
+      - name: Setup Android SDK
         run: |
-          haxelib run lime setup android -alias -accept
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
+          "platform-tools" \
+          "platforms;android-33" \
+          "build-tools;33.0.2" \
+          "ndk;25.2.9519653"
+
+      - name: Configure Lime
+        run: |
+          haxelib run lime setup android -accept
+
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_HOME/ndk/21.4.7075529
+          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_HOME/ndk/25.2.9519653
           haxelib run lime config JAVA_HOME $JAVA_HOME
 
+      - name: Gradle Memory Fix
+        run: |
+          echo "org.gradle.jvmargs=-Xmx4096M" >> ~/.gradle/gradle.properties
+
+      - name: Clean
+        run: |
+          rm -rf export
+          rm -rf .gradle
+
       - name: Compile
-        run: haxelib run lime build android -debug -clean
+        env:
+          GRADLE_OPTS: -Xmx4g
+        run: |
+          haxelib run lime build android -debug
 
       - uses: actions/upload-artifact@v4
         with:
           name: Prototype-Android
-          path: export/debug/android/bin/app/build/outputs/apk/debug/*.apk
+          path: export/android/bin/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
