@@ -3,7 +3,8 @@ name: Android Build
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
@@ -21,29 +22,20 @@ jobs:
         with:
           haxe-version: 4.3.4
 
-      - name: Cache Haxelib
-        uses: actions/cache@v4
-        with:
-          path: ~/haxelib
-          key: haxelib-${{ hashFiles('**/Project.xml') }}
-          restore-keys: haxelib-
-
-      - name: Install Libraries
+      - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
 
-          haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git
-          
+      - name: Install Libraries
+        run: |
           haxelib install lime
           haxelib install openfl
           haxelib install flixel
           haxelib install flixel-addons
           haxelib install flixel-ui
-          haxelib install hscript
-          haxelib install tjson
-          haxelib install actuate
+          haxelib install hxcpp
 
-      - name: Setup Android SDK
+      - name: Setup Android
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
 
@@ -61,17 +53,12 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_HOME/ndk/25.2.9519653
           haxelib run lime config JAVA_HOME $JAVA_HOME
 
-      - name: Gradle Memory Fix
-  run: |
-    mkdir -p ~/.gradle
-    echo "org.gradle.jvmargs=-Xmx4096M" >> ~/.gradle/gradle.properties
-
-      - name: Clean
+      - name: Fix Gradle Memory
         run: |
-          rm -rf export
-          rm -rf .gradle
+          mkdir -p ~/.gradle
+          echo "org.gradle.jvmargs=-Xmx4096M" > ~/.gradle/gradle.properties
 
-      - name: Compile
+      - name: Build APK
         env:
           GRADLE_OPTS: -Xmx4g
         run: |
@@ -79,6 +66,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Prototype-Android
+          name: AndroidBuild
           path: export/android/bin/app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
